@@ -1,1 +1,75 @@
+# Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Load the dataset
+file_path = r"C:\Users\jhase\Downloads\baseball.xlsx"
+baseball_data = pd.read_excel(file_path)
+
+# Select relevant columns for prediction and target variable
+# 'RS' stands for Runs Scored, 'RA' stands for Runs Allowed, 
+# 'W' stands for Wins, 'OBP' stands for On-Base Percentage, 
+# 'SLG' stands for Slugging Percentage, 'BA' stands for Batting Average
+# 'Playoffs' is the target variable indicating if a team made it to playoffs (1) or not (0)
+X = baseball_data[['Runs Scored', 'Runs Allowed', 'Wins', 'OBP', 'SLG', 'Team Batting Average']]
+y = baseball_data['Playoffs']
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize the Logistic Regression model
+model = LogisticRegression()
+
+# Train the model on the training data
+model.fit(X_train, y_train)
+
+# Make predictions on the testing data
+predictions = model.predict(X_test)
+
+# Calculate the accuracy of the model
+accuracy = accuracy_score(y_test, predictions)
+
+# Print the accuracy of the model
+print("Accuracy of the prediction model:", accuracy)
+
+# Predicting the probability of a team making using the excel file it to playoffs
+# 'Runs Scored', 'Runs Allowed', 'Wins', 'OBP', 'SLG', 'Team Batting Average'
+# new_data = [[724, 641, 94, 0.323, 0.418, 0.267]] #Test data for the model
+# new_predictions = model.predict(new_data)
+# new_probabilities = model.predict_proba(new_data)
+
+# Print the prediction and probabilities
+# print("Prediction for new data:", new_predictions)
+# print("Probabilities for new data:", new_probabilities)
+
+# Predicting the probability of a team making using the excel file it to playoffs
+# 'Runs Scored', 'Runs Allowed', 'Wins', 'OBP', 'SLG', 'Team Batting Average'
+new_data = [[734, 688, 81, 0.328, 0.418, 0.259]] #Test data ARI NL 2012
+new_predictions = model.predict(new_data)
+new_probabilities = model.predict_proba(new_data)
+
+# Print the prediction and probabilities
+print("Prediction for ARI NL for 2012:", new_predictions)
+print("Probabilities for ARI NL for 2012:", new_probabilities)
+
+# Summary
+# The model was trained using the Logistic Regression algorithm on the baseball dataset.
+# The model was able to predict whether a team made it to the playoffs or not with an accuracy of 0.75.
+# The model was then used to predict the probability of a team making it to the playoffs based on the input data.
+# The model predicted that the ARI NL team in 2012 had a 0.99 probability of making it to the playoffs.
+
+# Note: The model can be saved to a file and loaded later for making predictions without retraining the model. 
+# I figured this might be a little mnore advanced for our python class so I commented it out.
+# However I have included the code below since it is a good practice to save the model to a file.
+# As well as test my ability to work with new code.
+
+# Too Save the model to a file
+# import joblib
+# joblib.dump(model, 'baseball_playoffs_prediction_model.pkl')
+# print("Model saved to file.")
+
+# Load the model from the file
+# loaded_model = joblib.load('baseball_playoffs_prediction_model.pkl')
 
